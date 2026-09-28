@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f3">
+  <title>Sign in | ShiftPlanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="login-page">
+  <main class="login-layout">
+    <section class="login-art" aria-label="ShiftPlanner">
+      <a class="brand login-brand" href="/" aria-label="ShiftPlanner home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">ShiftPlanner<span>.</span></span>
+      </a>
+      <div class="login-art-content">
+        <span class="eyebrow">A CLEARER WAY TO PLAN</span>
+        <h1>Good shifts start with a plan.</h1>
+        <p>Keep your people, schedules, and shift changes moving together.</p>
+      </div>
+      <div class="login-art-footer"><span class="today-dot"></span> Your ShiftPlanner workspace</div>
+    </section>
+    <section class="login-main">
+      <div class="login-card">
+        <span class="eyebrow">WELCOME BACK</span>
+        <h2 id="auth-title">Sign in to ShiftPlanner</h2>
+        <p class="login-intro" id="auth-intro">Use your account to access ShiftPlanner.</p>
+        <div class="login-alert" id="login-alert" role="alert" hidden></div>
+        <form class="login-form" id="login-form">
+          <div class="form-field">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="admin" value="admin" required autofocus>
+          </div>
+          <div class="form-field">
+            <div class="password-label"><label for="password">Password</label></div>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="admin123" value="admin123" required>
+          </div>
+          <button class="button button-primary login-submit" type="submit">Sign in <span aria-hidden="true">?</span></button>
+        </form>
+        <p class="login-footnote">Secure account access <span>·</span> ShiftPlanner</p>
+      </div>
+    </section>
+  </main>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const alert = document.getElementById('login-alert');
+      
+      try {
+        const response = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          const data = await response.json();
+          alert.textContent = data.message || 'Login failed';
+          alert.hidden = false;
+        }
+      } catch (err) {
+        alert.textContent = 'Network error occurred';
+        alert.hidden = false;
+      }
+    });
+  </script>
+</body>
+</html>

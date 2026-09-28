@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f3">
+  <title>ShiftPlanner | Workforce operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body class="auth-checking">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="ShiftPlanner overview">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">ShiftPlanner<span>.</span></span>
+      </a>
+
+      <div class="workspace-label">WORKSPACE</div>
+      <div class="workspace-switcher">
+        <span class="workspace-avatar">N</span>
+        <span class="workspace-copy"><strong>Northstar Studio</strong><small id="workspace-context">Operations workspace</small></span>
+        <span class="chevron" aria-hidden="true">⌄</span>
+      </div>
+
+      <nav class="primary-nav" aria-label="Main navigation">
+        <div class="nav-label">WORKSPACE</div>
+        <a class="nav-link is-active" href="#overview" data-view="overview"><span class="nav-icon icon-grid" aria-hidden="true"></span>Overview</a>
+        <a class="nav-link" href="#roster" data-view="roster"><span class="nav-icon icon-calendar" aria-hidden="true"></span>Roster<span class="nav-count" id="roster-nav-count">0</span></a>
+        <a class="nav-link" href="#team" data-view="team"><span class="nav-icon icon-people" aria-hidden="true"></span>Employees</a>
+        <a class="nav-link" href="#shifts" data-view="shifts"><span class="nav-icon icon-clock" aria-hidden="true"></span>Shift types</a>
+        <a class="nav-link" href="#swaps" data-view="swaps"><span class="nav-icon icon-swap" aria-hidden="true"></span>Swap requests<span class="nav-count nav-count-accent" id="swap-nav-count">0</span></a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sync-card">
+          <span class="sync-orb" aria-hidden="true"></span>
+          <div><strong id="connection-label">Connecting</strong><small id="connection-detail">Checking workspace data</small></div>
+        </div>
+        <button class="profile-button" type="button" aria-label="Workspace profile">
+          <span class="profile-avatar" id="sidebar-avatar">DM</span>
+          <span class="profile-copy"><strong id="sidebar-account-name">Demo manager</strong><small id="sidebar-account-role">Workspace manager</small></span>
+          <span class="profile-more" aria-hidden="true">···</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menu-toggle" type="button" aria-label="Open navigation"><span class="menu-glyph" aria-hidden="true"></span></button>
+        <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div>
+        <div class="topbar-actions">
+          <div class="today-chip"><span class="today-dot"></span><span id="today-label">Today</span></div>
+          <button class="icon-button refresh-button" id="refresh-button" type="button" aria-label="Refresh data" title="Refresh data"><span class="refresh-glyph" aria-hidden="true">↻</span></button>
+          <span class="topbar-divider"></span>
+          <button class="top-avatar" id="account-toggle" type="button" aria-label="Open account menu" aria-haspopup="menu" aria-expanded="false">DM</button>
+          <div class="account-menu" id="account-menu" role="menu" hidden>
+            <div class="account-menu-user"><span class="account-menu-avatar" id="account-avatar">DM</span><span><strong id="account-name">Demo manager</strong><small id="account-email">demo@shiftplanner.local</small></span></div>
+            <div class="account-menu-divider"></div>
+            <button type="button" role="menuitem" data-action="open-employees"><span aria-hidden="true">♙</span> Employees</button>
+            <button type="button" role="menuitem" data-action="refresh"><span aria-hidden="true">↻</span> Refresh workspace</button>
+            <div class="account-menu-divider"></div>
+            <button type="button" class="account-signout" role="menuitem" data-action="logout"><span aria-hidden="true">↪</span> Sign out</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+        <div id="view-root" aria-live="polite"></div>
+        <footer class="page-footer"><span>ShiftPlanner <span class="footer-dot">·</span> <span id="workspace-footer-label">Workforce operations</span></span><span>Plan clearly. Work better.</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="mobile-scrim" id="mobile-scrim"></div>
+  <form id="logout-form" action="/auth/logout" method="post" hidden><input type="hidden" name="_csrf" id="logout-csrf"></form>
+  <dialog class="form-dialog" id="form-dialog" aria-labelledby="dialog-title">
+    <form id="entity-form" class="dialog-form">
+      <div class="dialog-head">
+        <div><span class="eyebrow" id="dialog-eyebrow">WORKSPACE</span><h2 id="dialog-title">Create item</h2></div>
+        <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Close dialog">×</button>
+      </div>
+      <div class="dialog-body" id="dialog-fields"></div>
+      <div class="dialog-actions"><button class="button button-quiet" type="button" data-close-dialog>Cancel</button><button class="button button-primary" id="dialog-submit" type="submit">Save changes <span aria-hidden="true">↗</span></button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
